@@ -1,4 +1,13 @@
-<?php
+<?
+error_reporting(E_ALL); // Error/Exception engine, always use E_ALL
+
+ini_set('ignore_repeated_errors', TRUE); // Ignore repeated errors, always use TRUE
+
+ini_set('display_errors', FALSE); // Error/Exception display, use FALSE only in production environment
+
+ini_set('log_errors', TRUE); // Error/Exception file logging.
+
+error_log('Hello, world!'); // Logging to file
 
 require_once('libs/database.php');
 

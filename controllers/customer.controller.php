@@ -39,12 +39,14 @@ class Customer extends SessionController{
 
         $customer->save();
 
-        $this->redirect('customer', ['success' => 'Customer created successfully']);
+        echo json_encode(['success' => 'Cliente creado correctamente.']);
+
+        // $this->redirect('customer', ['success' => 'Customer created successfully']);
     }
 
     // new expense UI
     function create(){
-        $this->view->render('expenses/create', [
+        $this->view->render('customer/create', [
             "user" => $this->user
         ]);
     } 
@@ -65,8 +67,9 @@ class Customer extends SessionController{
       $customer = new CustomerModel();
 
       $customer->setId($id);
-      $customer->getById($id);
-      return $this->customer;
+      
+      
+        echo json_encode($customer->getById($id));
     }
     
 
@@ -91,7 +94,8 @@ class Customer extends SessionController{
 
         $customer->update();
 
-        $this->redirect('customer', ['success' => 'Customer created successfully']);
+        echo json_encode(['success' => 'Cliente actualizado correctamente.']);
+        // $this->redirect('customer', ['success' => 'Customer created successfully']);
     }
 
 
@@ -103,9 +107,11 @@ class Customer extends SessionController{
         $res = $this->model->delete($id);
 
         if($res){
-            $this->redirect('', ['success' => 'El empleado fue eliminado correctamente.']);
+            echo json_encode(['success' => 'Cliente eliminado correctamente.']);
+            // $this->redirect('', ['success' => 'El empleado fue eliminado correctamente.']);
         }else{
-            $this->redirect('', ['error' => 'No se pudo eliminar el cliente']);
+            echo json_encode(['error' => 'Error al eliminar el cliente.']);
+            //$this->redirect('', ['error' => 'No se pudo eliminar el cliente']);
         }
     }
 
