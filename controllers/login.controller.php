@@ -26,7 +26,8 @@ class Login extends SessionController
       if ($user != null) {
         $this->initialize($user);
       } else {
-        $this->redirect('', ['error' => 'Invalid username or password']);
+        $this->redirect('', ['error' => 'Invalid username or '.$user.'password']);
+
         return;
       }
     } else {

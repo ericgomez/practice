@@ -11,6 +11,7 @@ require_once('classes/session.controller.php');
 
 require_once('config/config.php');
 
-include_once 'models/customer.php';
+include_once 'models/user.model.php';
+include_once 'models/customer.model.php';
 
 $app = new App();

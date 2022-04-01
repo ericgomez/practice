@@ -13,6 +13,31 @@ class SessionController extends Controller {
 
   public function init() {
     $this->session = new Session();
+
+    $this->validateSession();
+  }
+
+  public function validateSession() {
+    $currentURL = $this->getCurrentPage();
+
+    // check if session exists
+    if ($this->existsSession()) {
+      if ($currentURL !== 'customer') {
+        header('Location: '. constant('URL') .'/customer');
+      } 
+    } else {
+      if ($currentURL === 'customer') {
+      // not exists session
+      header('Location: '. constant('URL') . '');
+      } 
+    }
+  }
+
+  public function getCurrentPage() {
+    $actualLink = trim($_SERVER['REQUEST_URI']);
+    $url = explode('/', $actualLink);
+
+    return $url[2];
   }
 
   public function existsSession() {
@@ -37,6 +62,8 @@ class SessionController extends Controller {
 
   public function initialize($user){
     $this->session->setCurrentUser($user->getId());
+
+    $this->redirect('customer', []);
 }
 
 

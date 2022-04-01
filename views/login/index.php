@@ -30,9 +30,6 @@
                 <input type="submit" value="Login" />
             </p>
 
-            <p>
-                ¿You have an count? <a href="<?= constant('URL'); ?>/signup">Register</a>
-            </p>
         </form>
     </div>
 </body>

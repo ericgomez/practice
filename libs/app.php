@@ -13,7 +13,7 @@ class App
 
     if (empty($url[0])) {
       // If the first element is empty, then we are at the main page
-      $fileController = 'controllers/login.php';
+      $fileController = 'controllers/login.controller.php';
       require_once $fileController;
       $controller = new Login(); // Load the controller
       $controller->loadModel('login'); // Load model
@@ -21,7 +21,7 @@ class App
       return false;
     }
 
-    $fileController = 'controllers/' . $url[0] . '.php';
+    $fileController = 'controllers/' . $url[0] . '.controller.php';
     if (file_exists($fileController)) {
       require_once $fileController;
       // Load the controller

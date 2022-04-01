@@ -10,7 +10,7 @@ class Controller
   // charger the model
   function loadModel($model)
   {
-    $url = 'models/' . $model . 'model.php';
+    $url = 'models/' . $model . '.model.php';
 
     // verifier if the file exists
     if (file_exists($url)) {

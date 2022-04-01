@@ -21,12 +21,15 @@ class LoginModel extends Model {
             $item = $query->fetch(PDO::FETCH_ASSOC); 
 
             $user = new UserModel();
-            $user->from($item);
+            $user->setId($item['id']);
+            $user->setUsername($item['username']);
+            $user->setPassword($item['password'], false);
+            
 
             /* verifies that a password matches a hash 
                password_verify(string $password, string $hash) */
             if(password_verify($this->password, $user->getPassword())){
-                // return user
+              
                 return $user;
             }else{
                 return null;
