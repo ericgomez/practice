@@ -37,16 +37,16 @@
 
         <? 
         foreach ($customers as $customer) {
-          echo '<tr>';
-          echo '<th scope="row">' . $customer->getId() . '</th>';
+          echo '<tr  data-id='. $customer->getId() .'>';
+          echo '<th>' . $customer->getId() . '</th>';
           echo '<td>' . $customer->getNames() . '</td>';
           echo '<td>' . $customer->getPaternalSurname() . '</td>';
           echo '<td>' . $customer->getMaternalSurname() . '</td>';
           echo '<td>' . $customer->getDomicile() . '</td>';
           echo '<td>' . $customer->getEmail() . '</td>';
           echo '<td>';
-          echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editModal" data-id='. $customer->getId() .'>Editar</button>';
-          echo '<button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id='. $customer->getId() .'>Eliminar</button></td>';
+          echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>';
+          echo '<button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</button></td>';
           echo '</td>';    
           echo '</tr>';
         }

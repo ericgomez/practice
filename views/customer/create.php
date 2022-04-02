@@ -26,16 +26,16 @@
                 <input type="text" class="form-control" id="names">
               </div>
               <div class="mb-3">
-                <label for="paternal" class="col-form-label">Apellido Paterno:</label>
-                <input type="text" class="form-control" id="paternal">
+                <label for="lastName" class="col-form-label">Apellido Paterno:</label>
+                <input type="text" class="form-control" id="lastName">
               </div>
               <div class="mb-3">
-                <label for="maternal" class="col-form-label">Apellido Materno:</label>
-                <input type="text" class="form-control" id="maternal">
+                <label for="lastName2" class="col-form-label">Apellido Materno:</label>
+                <input type="text" class="form-control" id="lastName2">
               </div>
               <div class="mb-3">
-                <label for="domicile" class="col-form-label">Domicilio:</label>
-                <input type="text" class="form-control" id="domicile">
+                <label for="address" class="col-form-label">Domicilio:</label>
+                <input type="text" class="form-control" id="address">
               </div>
               <div class="mb-3">
                 <label for="email" class="col-form-label">Correo electronico:</label>
