@@ -4,7 +4,7 @@ interface IModel
 {
   public function save();
   public function getAll();
-  public function getById($id);
-  public function delete($id);
+  public function getById();
+  public function delete();
   public function update();
 }

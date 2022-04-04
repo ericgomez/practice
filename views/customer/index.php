@@ -1,8 +1,6 @@
-<?
-  $user = $this->data['user'];
-  $customers = $this->data['dates'];
-  // echo '<pre>' , var_dump($customers) , '</pre>';
-  
+<?php
+  // $user = $this->data['user'];
+  $customers = $this->data['dates'];  
 ?>
 
 <!DOCTYPE html>
@@ -34,33 +32,22 @@
           </tr>
         </thead>
         <tbody>
-
-        <? 
-        foreach ($customers as $customer) {
-          echo '<tr  data-id='. $customer->getId() .'>';
-          echo '<th>' . $customer->getId() . '</th>';
-          echo '<td>' . $customer->getNames() . '</td>';
-          echo '<td>' . $customer->getPaternalSurname() . '</td>';
-          echo '<td>' . $customer->getMaternalSurname() . '</td>';
-          echo '<td>' . $customer->getDomicile() . '</td>';
-          echo '<td>' . $customer->getEmail() . '</td>';
-          echo '<td>';
-          echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>';
-          echo '<button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</button></td>';
-          echo '</td>';    
-          echo '</tr>';
-        }
-        ?>
-  
-          <!-- <tr>
-            <th scope="row">1</th>
-            <td>Eric</td>
-            <td>Gomez</td>
-            <td>Sanchez</td>
-            <td>Barra de Colotepec 1 Seccion, Puerto Escondido.</td>
-            <td>@mdo</td>
-            <td><button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button> <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</button></td>
-          </tr> -->
+          <?php 
+            foreach ($customers as $customer) {
+              echo '<tr  data-id='. $customer->getId() .'>';
+              echo '<td>' . $customer->getId() . '</td>';
+              echo '<td>' . $customer->getNames() . '</td>';
+              echo '<td>' . $customer->getLastName() . '</td>';
+              echo '<td>' . $customer->getLastName2() . '</td>';
+              echo '<td>' . $customer->getAddress() . '</td>';
+              echo '<td>' . $customer->getEmail() . '</td>';
+              echo '<td>';
+              echo '<button type="button" class="btn btn-link btn-edit" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>';
+              echo '<button type="button" class="btn btn-link text-danger btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</button></td>';
+              echo '</td>';    
+              echo '</tr>';
+            }
+          ?>
         </tbody>
       </table>
     </div>
@@ -76,6 +63,7 @@
           </div>
           <div class="modal-body">
             <form class="edit-form">
+              <input type="hidden" id="id" name="id">
               <div class="mb-3">
                 <label for="names" class="col-form-label">Nombres:</label>
                 <input type="text" class="form-control" id="names" name="names">
@@ -96,12 +84,14 @@
                 <label for="email" class="col-form-label">Correo electronico:</label>
                 <input type="email" class="form-control" id="email" name="email">
               </div>
+
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Modificar Cliente</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary">Modificar Cliente</button>
-          </div>
+          
         </div>
       </div>
     </div>

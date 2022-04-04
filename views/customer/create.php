@@ -19,27 +19,28 @@
             Nuevo Cliente
           </div>
           <div class="card-body">
-            <form action="<?= constant('URL'); ?>/login/authenticate" method="POST">
-              <div><?php (isset($this->errorMessage))?  $this->errorMessage : '' ?></div>
+            <div><?php (isset($this->errorMessage))?  $this->errorMessage : '' ?></div>
+
+            <form id="add-form" method="POST">
               <div class="mb-3">
                 <label for="names" class="col-form-label">Nombres:</label>
-                <input type="text" class="form-control" id="names">
+                <input type="text" class="form-control" id="names" name="names">
               </div>
               <div class="mb-3">
                 <label for="lastName" class="col-form-label">Apellido Paterno:</label>
-                <input type="text" class="form-control" id="lastName">
+                <input type="text" class="form-control" id="lastName" name="lastName">
               </div>
               <div class="mb-3">
                 <label for="lastName2" class="col-form-label">Apellido Materno:</label>
-                <input type="text" class="form-control" id="lastName2">
+                <input type="text" class="form-control" id="lastName2" name="lastName2">
               </div>
               <div class="mb-3">
                 <label for="address" class="col-form-label">Domicilio:</label>
-                <input type="text" class="form-control" id="address">
+                <input type="text" class="form-control" id="address" name="address">
               </div>
               <div class="mb-3">
                 <label for="email" class="col-form-label">Correo electronico:</label>
-                <input type="email" class="form-control" id="email">
+                <input type="email" class="form-control" id="email" name="email">
               </div>
 
               <button type="submit" class="btn btn-success">Registrar Cliente</button>
@@ -48,4 +49,64 @@
         </div>
       </div>
   </div>
+
+  <script>
+    const d = document,
+      $addForm = d.getElementById('add-form')
+      // $addInputs = d.querySelectorAll('#add-form input')
+
+    $addForm.addEventListener('submit', e => {
+      e.preventDefault()
+
+      let names = e.target.names.value,
+        lastName = e.target.lastName.value,
+        lastName2 = e.target.lastName2.value,
+        address = e.target.address.value,
+        email = e.target.email.value
+
+        console.log(e.target);
+
+
+      if (
+        names === '' ||
+        lastName === '' ||
+        lastName2 === '' ||
+        address === '' ||
+        email === ''
+      ) {
+        alert('Todos los campos son obligatorios')
+        return
+      }
+
+      fetch('http://localhost:8080/practice/customer/newCustomer', {
+        method: 'POST',
+        body: new FormData(e.target)
+      })
+        .then(res => (res.ok ? res.json() : Promise.reject(res)))
+        .then(json => {
+          console.log(json)
+
+          // if (json.status === 'success') {
+
+            
+          // }
+
+          // $addForm.reset()
+        })
+        .catch(err => {
+          console.log(err)
+          const message =
+            err.statusText || 'There was an error sending, please try again'
+
+          //$response.innerHTML = `<p>Error ${err.status}: ${message}</p>`;
+        })
+        .finally(() => {
+          // setTimeout(() => {
+          //   $response.classList.add('none');
+          //   $response.innerHTML = '';
+          // }, 3000)
+        })
+  })
+  </script>
+</body>
 </html>

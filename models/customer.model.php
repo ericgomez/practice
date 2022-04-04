@@ -5,31 +5,31 @@ class CustomerModel extends Model implements IModel
 
   private $id;
   private $names;
-  private $paternalSurname;
-  private $maternalSurname;
-  private $domicile;
+  private $lastName;
+  private $lastName2;
+  private $address;
   private $email;
 
   public function __construct()
   {
     parent::__construct();
     $this->names = '';
-    $this->paternalSurname = '';
-    $this->maternalSurname = '';
-    $this->domicile = '';
+    $this->lastName = '';
+    $this->lastName2 = '';
+    $this->address = '';
     $this->email = '';
   }
 
   public function save()
   {
     try {
-      $query = $this->prepare('INSERT INTO customers (names, paternal_surname, maternal_surname, domicile, email) VALUES(:names, :paternalSurname, :maternalSurname, :domicile, :email)');
+      $query = $this->prepare('INSERT INTO customers (names, last_name, last_name2, address, email) VALUES(:names, :lastName, :lastName2, :address, :email)');
       $query->execute([
-        'names' => $this->names, 
-        'paternalSurname' => $this->paternalSurname,
-        'maternalSurname' => $this->maternalSurname,
-        'domicile' => $this->domicile,
-        'email' => $this->email
+        'names'     => $this->names, 
+        'lastName'  => $this->lastName,
+        'lastName2' => $this->lastName2,
+        'address'   => $this->address,
+        'email'     => $this->email
       ]);
 
       return true;
@@ -46,12 +46,12 @@ class CustomerModel extends Model implements IModel
       while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $item = new CustomerModel();
         
-        $item->id = $row['id'];
-        $item->names = $row['names'];
-        $item->paternalSurname = $row['paternal_surname'];
-        $item->maternalSurname = $row['maternal_surname'];
-        $item->domicile = $row['domicile'];
-        $item->email = $row['email'];
+        $item->id         = $row['id'];
+        $item->names      = $row['names'];
+        $item->lastName   = $row['last_name'];
+        $item->lastName2  = $row['last_name2'];
+        $item->address    = $row['address'];
+        $item->email      = $row['email'];
 
         array_push($items, $item);
       }
@@ -60,7 +60,8 @@ class CustomerModel extends Model implements IModel
     } catch (PDOException $e) {}
   }
 
-  public function getById($id) {
+  public function getById() {
+
     try {
       $query = $this->prepare('SELECT * FROM customers WHERE id = :id');
       $query->execute([
@@ -71,16 +72,19 @@ class CustomerModel extends Model implements IModel
 
       $this->id = $customer['id'];
       $this->names = $customer['names'];
-      $this->paternalSurname = $customer['paternal_surname'];
-      $this->maternalSurname = $customer['maternal_surname'];
-      $this->domicile = $customer['domicile'];
+      $this->lastName = $customer['last_name'];
+      $this->lastName2 = $customer['last_name2'];
+      $this->address = $customer['address'];
       $this->email = $customer['email'];
 
+
       return $this;
-    } catch (PDOException $e) {}
+    } catch (PDOException $e) {
+      return null;
+    }
   }
 
-  public function delete($id) {    
+  public function delete() {    
     try {
       $query = $this->prepare('DELETE FROM customers WHERE id = :id');
       $query->execute([
@@ -95,35 +99,19 @@ class CustomerModel extends Model implements IModel
 
   public function update() {
     try {
-      $query = $this->prepare('UPDATE customers SET names = :names, paternal_surname = :paternalSurname, maternalSurname = :maternalSurname, domicile = :domicile, email = :email WHERE id = :id');
+      $query = $this->prepare('UPDATE customers SET names = :names, last_name = :lastName, last_name2 = :lastName2, address = :address, email = :email WHERE id = :id');
       $query->execute([
-        'names' => $this->names, 
-        'paternalSurname' => $this->paternalSurname,
-        'maternalSurname' => $this->maternalSurname,
-        'domicile' => $this->domicile,
-        'email' => $this->email
+        'names'     => $this->names, 
+        'lastName'  => $this->lastName,
+        'lastName2' => $this->lastName2,
+        'address'   => $this->address,
+        'email'     => $this->email,
+        'id'        => $this->id
       ]);
 
       return true;
     } catch (PDOException $e) {
-      return false;
-    }
-  }
-
-  public function exists($email){
-    try{
-      $query = $this->prepare('SELECT name FROM customers WHERE email = :email');
-      $query->execute( ['email' => $email]);
-            
-      if($query->rowCount() > 0){
-        error_log('customerModel::exists() => true');
-        return true;
-      }else{
-        error_log('customerModel::exists() => false');
-        return false;
-      }
-    }catch(PDOException $e){
-      error_log($e);
+      echo $e;
       return false;
     }
   }
@@ -131,16 +119,16 @@ class CustomerModel extends Model implements IModel
   // Getters and setters
   public function setId($id){$this->id = $id;}
   public function setNames($names){$this->names = $names;}
-  public function setPaternalSurname($paternalSurname){$this->paternalSurname = $paternalSurname;}
-  public function setMaternalSurname($maternalSurname){$this->maternalSurname = $maternalSurname;}
-  public function setDomicile($domicile){$this->domicile = $domicile;}
+  public function setLastName($lastName){$this->lastName = $lastName;}
+  public function setLastName2($lastName2){$this->lastName2 = $lastName2;}
+  public function setAddress($address){$this->address = $address;}
   public function setEmail($email){$this->email = $email;}
 
   public function getId(){return $this->id;}
   public function getNames(){ return $this->names;}
-  public function getPaternalSurname(){return $this->paternalSurname;}
-  public function getMaternalSurname(){return $this->maternalSurname;}
-  public function getDomicile(){return $this->domicile;}
+  public function getLastName(){return $this->lastName;}
+  public function getLastName2(){return $this->lastName2;}
+  public function getAddress(){return $this->address;}
   public function getEmail(){return $this->email;}
 
 

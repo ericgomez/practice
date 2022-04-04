@@ -16,8 +16,7 @@ class UserModel extends Model implements IModel
 
   
 
-  public function getById($id) {
-    $this->setId($id);
+  public function getById() {
 
     try {
       $query = $this->prepare('SELECT * FROM users WHERE id = :id');
@@ -51,7 +50,7 @@ class UserModel extends Model implements IModel
 
   public function save() {}
   public function getAll() {}
-  public function delete($id) {}
+  public function delete() {}
   public function update() {}
 
   // Getters and setters

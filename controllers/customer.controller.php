@@ -19,7 +19,8 @@ class Customer extends SessionController{
     }
 
     function newCustomer(){
-        if(!$this->existPOST(['names', 'paternalSurname', 'maternalSurname', 'domicile', 'email'])){
+      
+        if(!$this->existPOST(['names', 'lastName', 'lastName2', 'address', 'email'])){
             $this->redirect('customer', ['error' => 'Todos los campos deben de estar llenos']);
             return;
         }
@@ -32,14 +33,18 @@ class Customer extends SessionController{
         $customer = new CustomerModel();
 
         $customer->setNames($this->getPost('names'));
-        $customer->setPaternalSurname((float)$this->getPost('paternalSurname'));
-        $customer->setMaternalSurname($this->getPost('maternalSurname'));
-        $customer->setDomicile($this->getPost('domicile'));
+        $customer->setLastName($this->getPost('lastName'));
+        $customer->setLastName2($this->getPost('lastName2'));
+        $customer->setAddress($this->getPost('address'));
         $customer->setEmail($this->getPost('email'));
 
         $customer->save();
 
-        echo json_encode(['success' => 'Cliente creado correctamente.']);
+        echo json_encode([
+        'status' => 'success',
+        'message' => 'Cliente creado correctamente.',
+        'data' => $customer
+      ]);
 
         // $this->redirect('customer', ['success' => 'Customer created successfully']);
     }
@@ -63,18 +68,37 @@ class Customer extends SessionController{
           $this->redirect('customer', ['error' => 'El campo id no puede ir vacio']);
           return;
       }
+
+      $data = [];
       
       $customer = new CustomerModel();
-
       $customer->setId($id);
       
+      $customer->getById();
       
-        echo json_encode($customer->getById($id));
+      // Check if customer exists
+      if($customer == null){
+        $this->redirect('customer', ['error' => 'El cliente no existe']);
+        return;
+      }
+
+      $data['id'] = $customer->getId();
+      $data['names'] = $customer->getNames();
+      $data['lastName'] = $customer->getLastName();
+      $data['lastName2'] = $customer->getLastName2();
+      $data['address'] = $customer->getAddress();
+      $data['email'] = $customer->getEmail();
+
+      echo json_encode([
+        'status' => 'success',
+        'message' => 'Cliente encontrado',
+        'data' => $data
+      ]);   
     }
     
 
     function updateCustomer(){
-        if(!$this->existPOST(['names', 'paternalSurname', 'maternalSurname', 'domicile', 'email'])){
+        if(!$this->existPOST(['id', 'names', 'lastName', 'lastName2', 'address', 'email'])){
             $this->redirect('customer', ['error' => 'Todos los campos deben de estar llenos']);
             return;
         }
@@ -86,32 +110,56 @@ class Customer extends SessionController{
 
         $customer = new CustomerModel();
 
+        $customer->setId($this->getPost('id'));
         $customer->setNames($this->getPost('names'));
-        $customer->setPaternalSurname((float)$this->getPost('paternalSurname'));
-        $customer->setMaternalSurname($this->getPost('maternalSurname'));
-        $customer->setDomicile($this->getPost('domicile'));
+        $customer->setLastName($this->getPost('lastName'));
+        $customer->setLastName2($this->getPost('lastName2'));
+        $customer->setAddress($this->getPost('address'));
         $customer->setEmail($this->getPost('email'));
 
         $customer->update();
 
-        echo json_encode(['success' => 'Cliente actualizado correctamente.']);
-        // $this->redirect('customer', ['success' => 'Customer created successfully']);
+        echo json_encode([
+          'status' => 'success', 
+          'message' => 'Cliente actualizado correctamente.'
+        ]);
     }
 
 
 
-    function delete($params){
+    function delete(){
+        if(!$this->existPOST(['id'])){
+            $this->redirect('customer', ['error' => 'Se require informacion del cliente']);
+            return;
+        }
+
+        if($this->user == null){
+            $this->redirect('customer', ['error' => 'Error al crear nuevo cliente.']);
+            return;
+        }
+
+        $id = $this->getPost('id');
+
+        if(empty($id)){
+            $this->redirect('customer', ['error' => 'El campo id no puede ir vacio']);
+            return;
+        }
+
+        $customer = new CustomerModel();
+        $customer->setId($id);
         
-        if($params === null) $this->redirect('', ['error' => 'Los campos no pueden ir vacios']);
-        $id = $params[0];
-        $res = $this->model->delete($id);
+        $res = $customer->delete();
 
         if($res){
-            echo json_encode(['success' => 'Cliente eliminado correctamente.']);
-            // $this->redirect('', ['success' => 'El empleado fue eliminado correctamente.']);
+            echo json_encode([
+              'status' => 'success', 
+              'message' => 'Cliente eliminado correctamente.'
+            ]);
         }else{
-            echo json_encode(['error' => 'Error al eliminar el cliente.']);
-            //$this->redirect('', ['error' => 'No se pudo eliminar el cliente']);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Error al eliminar el cliente.'
+            ]);
         }
     }
 
