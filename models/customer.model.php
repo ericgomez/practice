@@ -23,7 +23,7 @@ class CustomerModel extends Model implements IModel
   public function save()
   {
     try {
-      $query = $this->prepare('INSERT INTO customers (names, last_name, last_name2, address, email) VALUES(:names, :lastName, :lastName2, :address, :email)');
+      $query = $this->prepare('CALL addCustomer(:names, :lastName, :lastName2, :address, :email)');
       $query->execute([
         'names'     => $this->names, 
         'lastName'  => $this->lastName,
@@ -33,7 +33,9 @@ class CustomerModel extends Model implements IModel
       ]);
 
       // get last customer inserted
-      return true;
+      $id = $query->fetch(PDO::FETCH_ASSOC);
+     
+      return $id;
 
     } catch (PDOException $e) {
       return false;

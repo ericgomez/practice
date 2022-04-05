@@ -151,6 +151,7 @@ $addForm.addEventListener('submit', e => {
         // if (!e.target.matches('#todo-form')) return false
         // if (!e.target.matches('table tbody')) return false
         e.preventDefault()
+        console.log(json)
 
         // add item in the list
         let $tr = d.createElement('tr'),
@@ -159,14 +160,17 @@ $addForm.addEventListener('submit', e => {
           $tdLastName = d.createElement('td'),
           $tdLastName2 = d.createElement('td'),
           $tdAddress = d.createElement('td'),
-          $tdEmail = d.createElement('td')
+          $tdEmail = d.createElement('td'),
+          $tdActions = d.createElement('td')
 
-        $tdId.textContent = json.data.customer
+        $tdId.textContent = json.data.id
         $tdNames.textContent = names
         $tdLastName.textContent = lastName
         $tdLastName2.textContent = lastName2
         $tdAddress.textContent = address
         $tdEmail.textContent = email
+        $tdActions.innerHTML =
+          '<button type="button" class="btn btn-link btn-edit" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button><button type="button" class="btn btn-link text-danger btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar</button></td>'
 
         $tr.appendChild($tdId)
         $tr.appendChild($tdNames)
@@ -174,6 +178,7 @@ $addForm.addEventListener('submit', e => {
         $tr.appendChild($tdLastName2)
         $tr.appendChild($tdAddress)
         $tr.appendChild($tdEmail)
+        $tr.appendChild($tdActions)
 
         $list.appendChild($tr)
 
