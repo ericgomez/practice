@@ -17,7 +17,7 @@
 
   <div class="container mt-4">
       <h1 class="text-center">Customers List</h1>
-      <!-- <a href="" class="btn btn-success mb-2">Create customers</a> -->
+      <button type="submit" class="btn btn-success mb-2 btn-create" data-bs-toggle="modal" data-bs-target="#addModal">Nuevo cliente</button>
 
       <table class="table table-striped">
         <thead>
@@ -31,7 +31,7 @@
             <th scope="col">Acciones</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="customer-list">
           <?php 
             foreach ($customers as $customer) {
               echo '<tr  data-id='. $customer->getId() .'>';
@@ -52,6 +52,48 @@
       </table>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Agregar cliente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="add-form">
+              <input type="hidden" id="id" name="id">
+              <div class="mb-3">
+                <label for="names" class="col-form-label">Nombres:</label>
+                <input type="text" class="form-control" id="names" name="names">
+              </div>
+              <div class="mb-3">
+                <label for="lastName" class="col-form-label">Apellido Paterno:</label>
+                <input type="text" class="form-control" id="lastName" name="lastName">
+              </div>
+              <div class="mb-3">
+                <label for="lastName2" class="col-form-label">Apellido Materno:</label>
+                <input type="text" class="form-control" id="lastName2" name="lastName2">
+              </div>
+              <div class="mb-3">
+                <label for="address" class="col-form-label">Domicilio:</label>
+                <input type="text" class="form-control" id="address" name="address">
+              </div>
+              <div class="mb-3">
+                <label for="email" class="col-form-label">Correo electronico:</label>
+                <input type="email" class="form-control" id="email" name="email">
+              </div>
+
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Agregar Cliente</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,6 +137,7 @@
         </div>
       </div>
     </div>
+    
 
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">

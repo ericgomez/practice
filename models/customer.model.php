@@ -32,7 +32,9 @@ class CustomerModel extends Model implements IModel
         'email'     => $this->email
       ]);
 
+      // get last customer inserted
       return true;
+
     } catch (PDOException $e) {
       return false;
     }

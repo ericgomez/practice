@@ -38,12 +38,12 @@ class Customer extends SessionController{
         $customer->setAddress($this->getPost('address'));
         $customer->setEmail($this->getPost('email'));
 
-        $customer->save();
+        $id = $customer->save();
 
         echo json_encode([
         'status' => 'success',
         'message' => 'Cliente creado correctamente.',
-        'data' => $customer
+        'data' => $id
       ]);
 
         // $this->redirect('customer', ['success' => 'Customer created successfully']);
