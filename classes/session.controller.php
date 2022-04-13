@@ -27,8 +27,8 @@ class SessionController extends Controller {
       } 
     } else {
       if ($currentURL === 'customer') {
-      // not exists session
-      header('Location: '. constant('URL') . '');
+        // not exists session
+        header('Location: '. constant('URL'));
       } 
     }
   }

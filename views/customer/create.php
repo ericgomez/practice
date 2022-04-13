@@ -10,8 +10,6 @@
 <body>
   <?php require 'header.php'; ?>
 
-  <?php $this->showMessages();?>
-
     <div class="container mt-5">
     <div class="col-6 mx-auto">
         <div class="card">
@@ -19,7 +17,7 @@
             Nuevo Cliente
           </div>
           <div class="card-body">
-            <div><?php (isset($this->errorMessage))?  $this->errorMessage : '' ?></div>
+            <div><?php echo $this->message ?  $this->message : '' ?></div>
 
             <form id="add-form" method="POST">
               <div class="mb-3">

@@ -13,7 +13,6 @@
 <body>
 
     <?php require 'views/header.php'; ?>
-    <?php $this->showMessages();?>
 
     <div class="container mt-5">
     <div class="col-6 mx-auto">
@@ -23,7 +22,12 @@
           </div>
           <div class="card-body">
             <form action="<?= constant('URL'); ?>/login/authenticate" method="POST">
-              <div><?php (isset($this->errorMessage))?  $this->errorMessage : '' ?></div>
+              
+              <?php echo $this->message 
+                ? '<div class="alert alert-danger">'.$this->message.'</div>'
+                : '' 
+              ?>
+              
               <div class="mb-3">
                 <label for="username" class="form-label">Username:</label>
                 <input type="text" class="form-control" name="username" id="username">

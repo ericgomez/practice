@@ -55,21 +55,8 @@ class Controller
     return $_POST[$name];
   }
 
-  public function redirect($url, $messages)
+  public function redirect($url)
   {
-    $data = [];
-    $params = '';
-
-    foreach ($messages as $key => $message) {
-      array_push($data, $key . '=' . $message);
-    }
-
-    $param = join('&', $data);
-
-    if ($param != '') {
-      $params = '?' . $param;
-    }
-
-    header('Location: ' . constant('URL') . '/' . $url . $params);
+    header('Location: ' . constant('URL') . '/' . $url);
   }
 }

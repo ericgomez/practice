@@ -14,19 +14,32 @@ class Customer extends SessionController{
 
         $this->view->render('customer/index', [
             'user' => $this->user,
-            'dates' => $customerModel->getAll()
+            'customers' => $customerModel->getAll()
         ]);
     }
 
     function newCustomer(){
-      
         if(!$this->existPOST(['names', 'lastName', 'lastName2', 'address', 'email'])){
-            $this->redirect('customer', ['error' => 'Todos los campos deben de estar llenos']);
+						echo json_encode([
+							'status' => 'error', 
+							'message' => 'Todos los campos son obligatorios'
+						]);
             return;
         }
 
         if($this->user == null){
-            $this->redirect('customer', ['error' => 'Error al crear nuevo cliente.']);
+					echo json_encode([
+						'status' => 'error', 
+						'message' => "Debe iniciar sesión para poder crear un cliente"
+					]); 
+          return;
+        }
+
+        if (!filter_var($this->getPost('email'), FILTER_VALIDATE_EMAIL)) {
+          echo json_encode([
+            	'status' => 'error', 
+              'message' => "El email no es valido"
+            ]);
             return;
         }
 
@@ -45,28 +58,32 @@ class Customer extends SessionController{
         'message' => 'Cliente creado correctamente.',
         'data' => $id
       ]);
-
-        // $this->redirect('customer', ['success' => 'Customer created successfully']);
     }
 
     // new expense UI
-    function create(){
-        $this->view->render('customer/create', [
-            "user" => $this->user
-        ]);
-    } 
+    // function create(){
+    //     $this->view->render('customer/create', [
+    //         "user" => $this->user
+    //     ]);
+    // } 
 
     function getCustomerById() {
       if(!$this->existPOST(['id'])){
-        $this->redirect('customer', ['error' => 'Se require informacion del cliente']);
+        echo json_encode([
+          'status' => 'error', 
+          'message' => 'No se ha enviado el id del cliente'
+        ]);
         return;
       }
 
       $id = $this->getPost('id');
 
       if(empty($id)){
-          $this->redirect('customer', ['error' => 'El campo id no puede ir vacio']);
-          return;
+				echo json_encode([
+          'status' => 'error', 
+          'message' => 'El id no puede estar vacio.'
+        ]);
+        return;
       }
 
       $data = [];
@@ -78,7 +95,10 @@ class Customer extends SessionController{
       
       // Check if customer exists
       if($customer == null){
-        $this->redirect('customer', ['error' => 'El cliente no existe']);
+        echo json_encode([
+        	'status' => 'error', 
+          'message' => "Debe iniciar sesión para poder actualizar un cliente"
+        ]);
         return;
       }
 
@@ -91,7 +111,7 @@ class Customer extends SessionController{
 
       echo json_encode([
         'status' => 'success',
-        'message' => 'Cliente encontrado',
+        'message' => 'Cliente obtenido correctamente.',
         'data' => $data
       ]);   
     }
@@ -99,12 +119,26 @@ class Customer extends SessionController{
 
     function updateCustomer(){
         if(!$this->existPOST(['id', 'names', 'lastName', 'lastName2', 'address', 'email'])){
-            $this->redirect('customer', ['error' => 'Todos los campos deben de estar llenos']);
+						echo json_encode([
+            	'status' => 'error', 
+              'message' => "Todos los campos son obligatorios"
+            ]);
             return;
         }
 
         if($this->user == null){
-            $this->redirect('customer', ['error' => 'Error al crear nuevo cliente.']);
+						echo json_encode([
+            	'status' => 'error', 
+              'message' => "Debe iniciar sesión para poder actualizar un cliente"
+            ]);
+            return;
+        }
+
+        if (!filter_var($this->getPost('email'), FILTER_VALIDATE_EMAIL)) {
+          echo json_encode([
+            	'status' => 'error', 
+              'message' => "El email no es valido"
+            ]);
             return;
         }
 
@@ -129,19 +163,20 @@ class Customer extends SessionController{
 
     function delete(){
         if(!$this->existPOST(['id'])){
-            $this->redirect('customer', ['error' => 'Se require informacion del cliente']);
-            return;
-        }
-
-        if($this->user == null){
-            $this->redirect('customer', ['error' => 'Error al crear nuevo cliente.']);
+						echo json_encode([
+            	'status' => 'error', 
+              'message' => "Todos los campos son obligatorios"
+            ]);
             return;
         }
 
         $id = $this->getPost('id');
 
         if(empty($id)){
-            $this->redirect('customer', ['error' => 'El campo id no puede ir vacio']);
+						echo json_encode([
+            	'status' => 'error', 
+              'message' => "El id no puede estar vacio"
+            ]);
             return;
         }
 
@@ -152,13 +187,13 @@ class Customer extends SessionController{
 
         if($res){
             echo json_encode([
-              'status' => 'success', 
+            	'status' => 'success', 
               'message' => 'Cliente eliminado correctamente.'
             ]);
         }else{
             echo json_encode([
-                'status' => 'error',
-                'message' => 'Error al eliminar el cliente.'
+              'status' => 'error',
+              'message' => 'Error al eliminar el cliente.'
             ]);
         }
     }

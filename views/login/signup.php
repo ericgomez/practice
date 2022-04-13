@@ -11,7 +11,6 @@
 
 <body>
   <?php require 'views/header.php'; ?>
-  <?php $this->showMessages(); ?>
   <div id="login-main">
 
     <form action="<?= constant('URL'); ?>/signup/newUser" method="POST">

@@ -13,7 +13,7 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                    <button class="btn btn-outline-success" type="submit">Logout</button>
+                    <a class="btn btn-outline-success" href="<?= constant('URL'); ?>/logout">Logout</a>
                 </form>
                 </div>
             </div>

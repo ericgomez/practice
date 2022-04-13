@@ -3,15 +3,25 @@ const d = document,
   $editInputs = d.querySelectorAll('.edit-form input'),
   $addForm = d.querySelector('.add-form'),
   $list = d.getElementById('customer-list'),
+  $addModal = d.getElementById('addModal'),
+  $editModal = d.getElementById('editModal'),
+  modal = new bootstrap.Modal($addModal),
   $numItems = d.querySelectorAll('#customer-list tr').length
 
-/* Delete customer */
+function validateEmail (email) {
+  const emailPattern = /^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/
+  return emailPattern.test(email)
+}
+
 d.addEventListener('click', e => {
   // Delete
   if (e.target.matches('.btn-delete')) {
     e.preventDefault()
     const $tr = e.target.parentElement.parentElement
     const id = $tr.dataset.id
+
+    // confirm delete
+    if (!confirm('Está seguro de que desea eliminar este cliente?')) return
 
     const data = new FormData()
     data.append('id', id)
@@ -27,7 +37,9 @@ d.addEventListener('click', e => {
           $tr.remove()
         }
       })
-  } else if (e.target.matches('.btn-edit')) {
+  }
+
+  if (e.target.matches('.btn-edit')) {
     e.preventDefault()
     const $tr = e.target.parentElement.parentElement
     const id = $tr.dataset.id
@@ -81,7 +93,9 @@ $editForm.addEventListener('submit', e => {
     address === '' ||
     email === ''
   ) {
-    alert('Todos los campos son obligatorios')
+    const $error = d.getElementById('error-create')
+    $error.textContent = 'Todos los campos son obligatorios'
+    $error.classList.remove('d-none')
     return
   }
 
@@ -113,10 +127,9 @@ $editForm.addEventListener('submit', e => {
       //$response.innerHTML = `<p>Error ${err.status}: ${message}</p>`;
     })
     .finally(() => {
-      // setTimeout(() => {
-      //   $response.classList.add('none');
-      //   $response.innerHTML = '';
-      // }, 3000)
+      $editForm.reset()
+      // close modal after submit vanilla js
+      $editModal.classList.remove('is-active')
     })
 })
 
@@ -137,7 +150,16 @@ $addForm.addEventListener('submit', e => {
     address === '' ||
     email === ''
   ) {
-    alert('Todos los campos son obligatorios')
+    const $error = d.getElementById('error-create')
+    $error.textContent = 'Todos los campos son obligatorios'
+    $error.classList.remove('d-none')
+    return
+  }
+
+  if (!validateEmail(email)) {
+    const $error = d.getElementById('error-create')
+    $error.textContent = 'El email no es válido'
+    $error.classList.remove('d-none')
     return
   }
 
@@ -181,11 +203,11 @@ $addForm.addEventListener('submit', e => {
         $tr.appendChild($tdActions)
 
         $list.appendChild($tr)
-
-        // $item.focus()
+      } else {
+        const $error = d.getElementById('error-create')
+        $error.textContent = json.message
+        $error.classList.remove('d-none')
       }
-
-      $addForm.reset()
     })
     .catch(err => {
       console.log(err)
@@ -195,9 +217,8 @@ $addForm.addEventListener('submit', e => {
       //$response.innerHTML = `<p>Error ${err.status}: ${message}</p>`;
     })
     .finally(() => {
-      // setTimeout(() => {
-      //   $response.classList.add('none');
-      //   $response.innerHTML = '';
-      // }, 3000)
+      $addForm.reset()
+      // close modal after submit
+      modal.hide()
     })
 })
